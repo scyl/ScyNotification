@@ -8,15 +8,28 @@ var io = require('socket.io')(http);
 
 // Handle HTML
 app.get('/', function(req, res){
-  res.sendFile(__dirname + '/views/index.html');
+  if (req.query.username) {
+    res.sendFile(__dirname + '/views/index.html');
+  } else {
+    res.sendFile(__dirname + '/views/name.html');
+  }
 });
 
 app.get('/style.css', function(req, res){
   res.sendFile(__dirname + '/public/style.css');
 });
 
+app.get('/name.css', function(req, res){
+  res.sendFile(__dirname + '/public/name.css');
+});
+
+
 app.get('/client.js', function(req, res){
   res.sendFile(__dirname + '/public/client.js');
+});
+
+app.get('/name.js', function(req, res){
+  res.sendFile(__dirname + '/public/name.js');
 });
 
 // Main app communications
@@ -26,8 +39,12 @@ io.on('connection', function(socket){
   console.log('a user connected: ' + socket.id);
   printCurClients();
   
+  socket.on('name', function(username){
+    console.log(username + ' registered to ' + socket.id);
+  });
+  
   socket.on('message', function(){
-    io.emit('flash')
+    io.emit('flash');
     console.log('PING!');
   });
   

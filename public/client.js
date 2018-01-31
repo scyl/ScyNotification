@@ -6,13 +6,15 @@
 
 $(function () {
   var socket = io();
+  var username = getParam('username');
   $('form').submit(function(){
     socket.emit('message');
     return false;
   });
   
   socket.on('connect', function(){
-    $('#myId').html(socket.id);
+    $('#myId').html(username + ' ' + socket.id);
+    socket.emit('name', username);
   });
   
   socket.on('flash', function(msg){
@@ -32,4 +34,9 @@ $(function () {
 
 function reset() {
   $('body').css('background-color', 'white');
+}
+
+function getParam(name) {
+    var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
 }
