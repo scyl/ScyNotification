@@ -11,21 +11,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/name.css">
   </head>
   <body>
     <header>
       <h1>
         ScyNotification
       </h1>
-      <h3 id="myId">
-      </h3>
     </header>
 
     <main>
-      <ul id="users">
-
-      </ul>
+      <div class="nameMain">
+        Display Name:<br>
+        <form action="">
+          <input class="nameInput" type="text" name="username" autocomplete="off" autofocus maxlength="20">
+        </form>
+      </div>
     </main>
 
     <!-- Your web-app is https, so your scripts need to be too -->
@@ -33,6 +34,6 @@
             integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
             crossorigin="anonymous"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/client.js"></script>
+    <script src="/name.js"></script>
   </body>
 </html>
