@@ -23,7 +23,6 @@ app.get('/name.css', function(req, res){
   res.sendFile(__dirname + '/public/name.css');
 });
 
-
 app.get('/client.js', function(req, res){
   res.sendFile(__dirname + '/public/client.js');
 });
@@ -34,18 +33,24 @@ app.get('/name.js', function(req, res){
 
 // Main app communications
 io.on('connection', function(socket){
-  currentClients.push(socket.id);
-  io.emit('updateUsers', currentClients);
   console.log('a user connected: ' + socket.id);
-  printCurClients();
   
   socket.on('name', function(username){
     console.log(username + ' registered to ' + socket.id);
+    currentClients.push([socket.id, username.substring(0,20)]);
+    io.emit('updateUsers', currentClients);
+    printCurClients();
   });
   
-  socket.on('message', function(){
+  socket.on('pingAll', function(){
     io.emit('flash');
-    console.log('PING!');
+    console.log('PING ALL!');
+  });
+  
+  socket.on('pingUser', function(username){
+    io.to(username).emit('flash');
+    socket.emit('flash');
+    console.log('PING ' + username);
   });
   
   socket.on('disconnect', function(){
@@ -69,7 +74,7 @@ function printCurClients() {
 
 function userDisconnect(id) {
   var i = 0;
-  while (currentClients[i] != id && i < currentClients.length) {
+  while (currentClients[i][0] != id && i < currentClients.length) {
     i++;
   }
   currentClients.splice(i,1);
